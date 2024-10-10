@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards de Preguntas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: teal;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: darkcyan;
+        }
+        .hidden {
+            display: none;
+        }
+        #backBtn {
+          position: absolute; /* Posicionamiento absoluto */
+          top: 20px; /* Espacio desde la parte superior */
+          left: 20px; /* Espacio desde la izquierda */
+          color: teal; /* Color del icono */
+          font-size: 24px; /* Tamaño del icono */
+          text-decoration: none; /* Sin subrayado */
+      }
+    </style>
+</head>
+<body>
+  <a id="backBtn" href="index.html"><i class="fas fa-arrow-left"></i></a>
+    <div class="card">
+        <h3 id="question">Pregunta aquí</h3>
+        <p id="answer" class="hidden">Respuesta aquí</p>
+        <button id="showAnswerBtn">Mostrar respuesta</button>
+        <button id="nextBtn" class="hidden">Siguiente pregunta</button>
+      </div>
+    <script>
+        const questions = [
+        { question: "¿QUÉ ENTIENDE POR COSTO?", 
+          answer: "El costo es una inversión en actividades y recursos que proporcionan un beneficio, reflejando financieramente las operaciones realizadas y los factores empleados. Se expresa en términos monetarios y abarca los procesos de producción, distribución y administración." 
+        },
+        { question: "¿QUÉ ES LA CONTABILIDAD DE COSTOS INDUSTRIALES?", 
+          answer: "La contabilidad de costos industriales se refiere al proceso de determinar y analizar los costos asociados con la producción y distribución de bienes y servicios en una entidad industrial. Su objetivo es proporcionar información útil para la toma de decisiones gerenciales, el control administrativo y la preparación de presupuestos. Además, ayuda a evaluar el desempeño financiero y a cumplir con obligaciones fiscales y laborales." 
+        },
+        { question: "¿QUÉ ES EL GASTO?", 
+          answer: "El gasto es una erogación aplicada directamente a resultados, considerada como parte del costo. A diferencia del costo, el gasto no se puede recuperar y se relaciona con los recursos utilizados para generar ingresos." 
+        },
+        { question: "EN FUNCIÓN A DIVERSOS CRITERIOS, ¿CÓMO SE CLASIFICAN LOS COSTOS?", 
+          answer: "Los costos se clasifican en función de diversos criterios, incluyendo: \n1. En función del negocio: Investigación y desarrollo, producción, distribución, etc.\n2. Por su asignación: Costos directos e indirectos.\n3. Según su comportamiento: Costos fijos y variables.\n4. Según el período al que pertenecen: Costos del período (no inventariables) y del producto (inventariables).\n5. Por el momento en que ocurren: Históricos y predeterminados." 
+        },
+        { question: "¿QUÉ ES EL COSTO EN FUNCIÓN DE LA INGENIERÍA DEL PRODUCTO?", 
+          answer: "El costo en función de la ingeniería del producto se refiere a los gastos asociados con el diseño, desarrollo y mejora de un producto antes de su producción. Incluye costos de investigación, pruebas, prototipos y ajustes necesarios para optimizar la funcionalidad y la manufacturabilidad del producto." 
+        },
+        { question: "¿QUÉ ENTIENDE POR COSTO DIRECTO Y COSTO INDIRECTO?", 
+          answer: "El costo directo se refiere a aquellos gastos que se pueden identificar y cuantificar específicamente en un objeto de costos, como materiales y sueldos directamente relacionados con la producción. Por otro lado, el costo indirecto son los gastos generales que no se pueden asignar de manera particular a un producto, como sueldos de supervisión y costos de mantenimiento. Ambos tipos de costos son esenciales para calcular el costo total de producción." 
+        },
+        { question: "EXPLIQUE LOS COSTOS FIJOS Y COSTOS VARIABLES.", 
+          answer: "Los costos fijos son aquellos que no varían con el volumen de producción o ventas, como la depreciación de maquinaria y el alquiler de instalaciones, y se mantienen constantes a largo plazo. En contraste, los costos variables dependen directamente del nivel de producción, como los materiales y la mano de obra, y fluctúan en función de la cantidad de unidades producidas o vendidas. Ambos tipos de costos son fundamentales para la planificación financiera y el análisis de rentabilidad." 
+        },
+        { question: "¿QUÉ ES UN SISTEMA DE COSTOS?", 
+          answer: "Un sistema de costos es un conjunto de procedimientos y técnicas administrativas y contables que procesan datos relacionados con los costos, recursos y actividades de una organización. Su finalidad es facilitar la planeación, control y toma de decisiones mediante la acumulación y análisis de información sobre costos de producción, distribución y administración." 
+        },
+        { question: "DESCRIBIR Y EXPLICAR LOS ELEMENTOS DEL COSTO EMPLEADO EN EL PROCESO PRODUCTIVO.", 
+          answer: "Los elementos del costo empleados en el proceso productivo se agrupan en tres categorías principales: \n1. Materiales directos: Son los insumos que se pueden identificar y asignar directamente a la producción de un producto, como materias primas y componentes. Su control y suministro son cruciales para la eficiencia del proceso productivo.\n2. Sueldos y salarios directos: Incluyen los pagos realizados a los trabajadores que están directamente involucrados en la producción, como operarios y técnicos. Estos costos son esenciales para calcular el costo total de producción.\n3. Gastos indirectos de producción: Son aquellos costos que no se pueden asignar directamente a un producto específico, como la electricidad, el mantenimiento de maquinaria y los salarios de supervisores. Estos gastos se distribuyen entre los diferentes departamentos y se prorratean para reflejar su impacto en el costo total de producción." 
+        },
+        { question: "¿CÓMO FUNCIONA LA TRIPLE HÉLICE, SOFTWARE, HARDWARE Y HUMANWARE PARA IMPULSAR LA IMPLEMENTACIÓN DE LA CONTABILIDAD FINANCIERA INFORMÁTICA EN LA AUTOMATIZACIÓN DE LOS PROCESOS CONTABLES?", 
+          answer: "La triple hélice, compuesta por software, hardware y humanware, funciona de la siguiente manera para impulsar la implementación de la contabilidad financiera informática:\n1. Software: Proporciona las aplicaciones y herramientas necesarias para automatizar procesos contables, facilitando la entrada, procesamiento y generación de informes financieros de manera eficiente y precisa.\n2. Hardware: Se refiere a los equipos físicos, como computadoras y servidores, que soportan el funcionamiento del software y permiten el almacenamiento y procesamiento de grandes volúmenes de datos contables.\n3. Humanware: Incluye el personal capacitado que utiliza el software y hardware, asegurando que los procesos contables se realicen correctamente y que la información generada sea útil para la toma de decisiones. La combinación de estos tres elementos optimiza la contabilidad financiera, mejorando la exactitud y la oportunidad de la información." 
+        },
+        { question: "¿QUÉ ES COSTO FINANCIERO?", 
+          answer: "El costo financiero es el total de los gastos que una empresa incurre al obtener financiamiento, incluyendo intereses, comisiones y otros cargos relacionados con préstamos o créditos. Este costo refleja el rendimiento que los inversionistas esperan recibir por el capital que han proporcionado a la empresa. Es un componente clave en la evaluación de la rentabilidad de las inversiones y en la gestión financiera de la organización." 
+        },
+        { question: "¿QUÉ ES LA INTEGRACIÓN DEL COSTO TOTAL?", 
+          answer: "La integración del costo total es el proceso de sumar todos los costos asociados a la producción y operación de una empresa, incluyendo costos de producción, distribución, administración, financiación y otros costos extraordinarios. Este cálculo es esencial para determinar la rentabilidad, la eficiencia operativa y para establecer precios de venta adecuados. Conocer el costo total permite a las empresas realizar análisis financieros y tomar decisiones informadas sobre sus operaciones." 
+        },
+        { question: "¿POR QUÉ ES IMPORTANTE LA DETERMINACIÓN DEL PRECIO DE VENTA DEL PRODUCTO PARA LA INDUSTRIA?", 
+          answer: "La determinación del precio de venta del producto es crucial para la industria porque:\n1. Rentabilidad: Establece un margen de ganancia que asegura la viabilidad financiera de la empresa, permitiendo cubrir costos y generar utilidades.\n2. Competitividad: Un precio adecuado ayuda a posicionar el producto en el mercado, atrayendo a los consumidores y diferenciándose de la competencia.\n3. Demanda: Influye en la percepción del valor del producto por parte del consumidor, afectando las decisiones de compra y, por ende, las ventas y la cuota de mercado." 
+        },
+        { question: "¿EN QUÉ CONSISTE LA COMPETITIVIDAD DE UNA EMPRESA EN EL MERCADO?", 
+          answer: "La competitividad de una empresa en el mercado consiste en su capacidad para ofrecer productos o servicios que satisfagan las necesidades y preferencias de los consumidores de manera más efectiva que sus competidores. Esto se logra a través de la innovación, la calidad, la eficiencia en costos, el servicio al cliente y la diferenciación de productos. Una empresa competitiva puede mantener o aumentar su cuota de mercado, mejorar su rentabilidad y asegurar su sostenibilidad a largo plazo." 
+        }
+    ];
+    
+
+        let shuffledQuestions = [];
+        let currentIndex = 0;
+
+        function shuffleQuestions() {
+            shuffledQuestions = [...questions];
+            shuffledQuestions.sort(() => Math.random() - 0.5); // Barajar las preguntas aleatoriamente
+        }
+
+        function showQuestion() {
+            const currentQuestion = shuffledQuestions[currentIndex];
+            document.getElementById('question').textContent = currentQuestion.question;
+            document.getElementById('answer').textContent = currentQuestion.answer;
+            document.getElementById('answer').classList.add('hidden');
+            document.getElementById('showAnswerBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+
+        function showAnswer() {
+            document.getElementById('answer').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                if (confirm('Has visto todas las preguntas. ¿Quieres volver a barajarlas?')) {
+                    currentIndex = 0;
+                    shuffleQuestions();
+                    showQuestion();
+                }
+            }
+        }
+
+        // Iniciar el programa
+        shuffleQuestions();
+        showQuestion();
+
+        // Asignar los eventos a los botones
+        document.getElementById('showAnswerBtn').addEventListener('click', showAnswer);
+        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    </script>
+</body>
+</html>

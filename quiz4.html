@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards de Preguntas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: teal;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: darkcyan;
+        }
+        .hidden {
+            display: none;
+        }
+        #backBtn {
+          position: absolute; /* Posicionamiento absoluto */
+          top: 20px; /* Espacio desde la parte superior */
+          left: 20px; /* Espacio desde la izquierda */
+          color: teal; /* Color del icono */
+          font-size: 24px; /* Tamaño del icono */
+          text-decoration: none; /* Sin subrayado */
+      }</style>
+</head>
+<body>
+  <a id="backBtn" href="index.html"><i class="fas fa-arrow-left"></i></a>
+    <div class="card">
+        <h3 id="question">Pregunta aquí</h3>
+        <p id="answer" class="hidden">Respuesta aquí</p>
+        <button id="showAnswerBtn">Mostrar respuesta</button>
+        <button id="nextBtn" class="hidden">Siguiente pregunta</button>
+    </div>
+
+    <script>
+      const questions = [
+    { question: "¿Qué es la carta de crédito 'Stand By' y para qué sirve?", 
+      answer: "Es una garantía bancaria donde las obligaciones del banco emisor están sujetas a la presentación de ciertos documentos que indican que el deudor ha incumplido sus obligaciones. Se utiliza para garantizar obligaciones financieras, comerciales o de servicios."
+    },
+    { question: "¿En qué casos se usa el crédito 'Back to Back'?", 
+      answer: "Se usa en operaciones internacionales triangulares, donde un crédito se abre en un país A para otro país B, y este a su vez abre un crédito similar en un país C, evitando que el importador final y el beneficiario se conozcan."
+    },
+    { question: "¿Qué es el crédito transferible?", 
+      answer: "Es un crédito documentario que puede ser transferido a uno o varios beneficiarios adicionales si el primer beneficiario lo decide."
+    },
+    { question: "¿Qué es el crédito rotativo (revolvente)?", 
+      answer: "Es un tipo de crédito que no está definido por reglas fijas, sino que puede renovarse o 'rotar' de manera flexible según se desee."
+    },
+    { question: "¿Qué es el crédito con cláusulas rojas?", 
+      answer: "Es un tipo de crédito donde los términos permiten pagos parciales o totales contra un simple compromiso del beneficiario de presentar los documentos requeridos en un plazo determinado."
+    },
+    { question: "¿Cuáles son las ventajas del crédito documentario para el exportador?", 
+      answer: "1. El banco paga independientemente del comprador.\n2. El comprador no puede detener el pago.\n3. En caso de litigio, el exportador tiene una posición más fuerte.\n4. Los pagos son más rápidos dentro del mercado del crédito."
+    },
+    { question: "¿Cuáles son las ventajas del crédito documentario para el importador?", 
+      answer: "1. El crédito confirma la solvencia del importador.\n2. La mercancía es suministrada conforme a lo acordado.\n3. El comprador recibe la mercancía en el plazo útil.\n4. El comprador tiene certeza de que los documentos concuerdan con las condiciones del crédito."
+    },
+    { question: "¿Qué son los costos por orden de trabajo?", 
+      answer: "Es un sistema que acumula y registra los costos para trabajos específicos mediante órdenes de trabajo. Los tres elementos del costo del producto se acumulan de acuerdo a la identificación de las órdenes."
+    },
+    { question: "¿Qué son los costos de distribución o ventas?", 
+      answer: "Son los importes invertidos en la promoción y distribución de ventas, así como los servicios proporcionados al cliente y los gastos relacionados con la mercadotecnia."
+    },
+    { question: "¿Qué es el costo operativo y por qué se le llama así?", 
+      answer: "Los costos operativos son los que permiten que las ventas y las operaciones de una empresa puedan realizarse. Son los costos relacionados con la promoción, ventas, cobranza, inversión, funcionamiento y gestión empresarial."
+    },
+    { question: "¿Qué es la contabilidad de rendimiento (throughput accounting)?", 
+      answer: "Es una técnica contable que mide la ganancia generada por una operación en relación con la inversión realizada y la utilidad generada durante un periodo de tiempo."
+    },
+    { question: "¿Qué es el punto de equilibrio?", 
+      answer: "Es el nivel de ventas en el cual los ingresos cubren exactamente los costos, sin generar ni pérdidas ni ganancias. Se utiliza como herramienta de análisis de costo-volumen-utilidad."
+    },
+    { question: "¿Qué es la cadena de valor?", 
+      answer: "Es el conjunto de actividades que generan valor para satisfacer las necesidades del consumidor, mejorando los rendimientos a un costo razonable. Estas actividades se miden en unidades como horas, insumos o capacidad de empleados."
+    },
+    { question: "¿Qué es el Just In Time (JIT)?", 
+      answer: "Es un enfoque de producción que busca reducir los inventarios al mínimo, produciendo justo lo necesario para satisfacer la demanda inmediata, optimizando la eficiencia operativa y eliminando cuellos de botella."
+    },
+    { question: "¿Cuáles son las fases más comunes del ciclo de producto?", 
+      answer: "1. Introducción: Fase inicial con alta inversión en diseño y promoción.\n2. Plenitud: Estabilidad en precios y disminución de costos.\n3. Madurez: Alta demanda y búsqueda de reemplazo o mejoras.\n4. Obsolescencia: El producto es reemplazado o su demanda disminuye."
+    },
+    { question: "¿Qué es el Backflush Accounting?", 
+      answer: "Es un sistema de contabilidad que no considera inventarios de materiales hasta que la producción está terminada, asociándose con enfoques como Just In Time (JIT)."
+    },
+    { question: "¿Qué son los INCOTERMS y cuál es su propósito?", 
+      answer: "Los INCOTERMS son normas aceptadas internacionalmente que establecen los derechos y obligaciones de compradores y vendedores en intercambios comerciales, especificando las condiciones de entrega y riesgos."
+    }
+];
+
+  
+    
+
+        let shuffledQuestions = [];
+        let currentIndex = 0;
+
+        function shuffleQuestions() {
+            shuffledQuestions = [...questions];
+            shuffledQuestions.sort(() => Math.random() - 0.5); // Barajar las preguntas aleatoriamente
+        }
+
+        function showQuestion() {
+            const currentQuestion = shuffledQuestions[currentIndex];
+            document.getElementById('question').textContent = currentQuestion.question;
+            document.getElementById('answer').textContent = currentQuestion.answer;
+            document.getElementById('answer').classList.add('hidden');
+            document.getElementById('showAnswerBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+
+        function showAnswer() {
+            document.getElementById('answer').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                if (confirm('Has visto todas las preguntas. ¿Quieres volver a barajarlas?')) {
+                    currentIndex = 0;
+                    shuffleQuestions();
+                    showQuestion();
+                }
+            }
+        }
+
+        // Iniciar el programa
+        shuffleQuestions();
+        showQuestion();
+
+        // Asignar los eventos a los botones
+        document.getElementById('showAnswerBtn').addEventListener('click', showAnswer);
+        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    </script>
+</body>
+</html>

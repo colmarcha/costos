@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards de Preguntas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .card {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            background-color: teal;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: darkcyan;
+        }
+        .hidden {
+            display: none;
+        }
+        #backBtn {
+          position: absolute; /* Posicionamiento absoluto */
+          top: 20px; /* Espacio desde la parte superior */
+          left: 20px; /* Espacio desde la izquierda */
+          color: teal; /* Color del icono */
+          font-size: 24px; /* Tamaño del icono */
+          text-decoration: none; /* Sin subrayado */
+      }</style>
+</head>
+<body>
+  <a id="backBtn" href="index.html"><i class="fas fa-arrow-left"></i></a>
+    <div class="card">
+        <h3 id="question">Pregunta aquí</h3>
+        <p id="answer" class="hidden">Respuesta aquí</p>
+        <button id="showAnswerBtn">Mostrar respuesta</button>
+        <button id="nextBtn" class="hidden">Siguiente pregunta</button>
+    </div>
+
+    <script>
+      const questions = [
+      { question: "¿Qué es la contabilidad general y la contabilidad de costos?", 
+        answer: "La contabilidad general abarca el registro de todas las transacciones de una entidad, mientras que la contabilidad de costos se enfoca en la recopilación, registro y producción de los datos relacionados con los recursos y operaciones que son reflejados financieramente en los costos."
+      },
+      { question: "Describa la contabilidad de costos industriales.", 
+        answer: "Los costos industriales representan las inversiones hechas para producir y distribuir bienes y servicios, administrar y financiar a la entidad, cubrir eventualidades y el cumplimiento de obligaciones fiscales y laborales, con la finalidad de que el negocio cumpla sus objetivos, genere utilidades y continúe en marcha."
+      },
+      { question: "¿Cuál es la diferencia entre costo y gasto, explique?", 
+        answer: "El costo es una inversión recuperable, considerada como un bien, mientras que el gasto no se puede recuperar. El costo es un conjunto de gastos, mientras que el gasto es una parte del costo."
+      },
+      { question: "Enumere la clasificación de costos.", 
+        answer: "1. En función del negocio\n2. Por su asignación\n3. Según su comportamiento\n4. Según el periodo al que pertenece\n5. Por el momento en que ocurren\n6. Otros conceptos de costo."
+      },
+      { question: "¿Qué son los costos de investigación y desarrollo?", 
+        answer: "Se refiere al conjunto de erogaciones destinadas a la creación de nuevos productos, nuevos servicios, nueva tecnología, nuevos procedimientos, incluyendo los gastos de investigación y experimentación."
+      },
+      { question: "¿Qué son los costos directos y qué son los costos indirectos?", 
+        answer: "Los costos directos son aquellos que pueden identificarse y cuantificarse en un objeto de costos, como un producto. Los costos indirectos son aquellos que no se pueden identificar ni cuantificar fácilmente en un objeto de costos."
+      },
+      { question: "Defina el concepto de costos fijos y costos variables.", 
+        answer: "Los costos fijos son aquellos que se gastan independientemente del volumen de producción o las unidades vendidas. Los costos variables cambian en proporción directa a los cambios en el volumen de producción o unidades vendidas."
+      },
+      { question: "¿Qué es el costo de financiación y cómo funciona?", 
+        answer: "Los costos de financiación incluyen la pérdida inflacionaria, la pérdida en moneda extranjera y los intereses cobrados por una entidad al realizar un préstamo a otra entidad deficitaria, permitiéndole reactivar sus operaciones y devolver el préstamo con un extra."
+      },
+      { question: "Explique la integración del costo total.", 
+        answer: "El costo total se integra por la suma del costo de producción, el costo de distribución, el costo de administración, el costo de financiación y otros costos. Es importante para conocer las utilidades, rentabilidad y eficiencia de las operaciones."
+      },
+      { question: "¿Qué es el costo estimado?", 
+        answer: "El costo estimado es una técnica rudimentaria de costos predeterminados que se calcula antes o durante el proceso de producción, basándose en observaciones empíricas y tendencias históricas de costos."
+      },
+      { question: "Explique el costo de determinación del precio de venta.", 
+        answer: "Los costos de precio de venta se calculan para cubrir los costos de producción y sumar un porcentaje de beneficio que incluye sueldos, salarios y gastos indirectos."
+      },
+      { question: "¿Qué son los medios de pago?", 
+        answer: "Los medios de pago son los instrumentos utilizados para realizar transacciones en el comercio internacional, como el efectivo, transferencias bancarias, cobranza simple, etc."
+      },
+      { question: "¿Qué es un sistema de costos?", 
+        answer: "Es un conjunto de procedimientos y técnicas contables que permiten determinar y analizar los costos de productos o servicios, y se utiliza para la toma de decisiones, control de gestión e información contable."
+      },
+      { question: "Explique los costos fijos y costos variables.", 
+        answer: "Los costos fijos no cambian con el volumen de producción, como el alquiler de una fábrica. Los costos variables dependen directamente del nivel de producción, como el costo de materiales o mano de obra."
+      },
+      { question: "Describa y explique los elementos del costo empleado en el proceso productivo.", 
+        answer: "Los elementos del costo son materiales directos, mano de obra directa y gastos indirectos de fabricación. Cada uno contribuye al costo total de producción y debe ser controlado para optimizar la eficiencia."
+      },
+      { question: "¿Qué son los costos estándar?", 
+        answer: "Son costos predeterminados que se calculan antes del proceso de producción y se basan en estudios científicos de capacidad productiva y eficiencia de operaciones."
+      },
+      { question: "¿Qué es el punto de equilibrio en un sistema de costos?", 
+        answer: "Es el nivel de ventas en el que se cubren todos los costos, sin generar ni pérdidas ni ganancias. Se calcula con base en el costo fijo total, el precio de venta unitario y el costo variable unitario."
+      },
+      { question: "¿Qué es el benchmarking?", 
+        answer: "Es el proceso de evaluar y comparar el desempeño de una empresa, producto o servicio con los mejores de la industria para identificar áreas de mejora."
+      }
+  ];
+  
+    
+
+        let shuffledQuestions = [];
+        let currentIndex = 0;
+
+        function shuffleQuestions() {
+            shuffledQuestions = [...questions];
+            shuffledQuestions.sort(() => Math.random() - 0.5); // Barajar las preguntas aleatoriamente
+        }
+
+        function showQuestion() {
+            const currentQuestion = shuffledQuestions[currentIndex];
+            document.getElementById('question').textContent = currentQuestion.question;
+            document.getElementById('answer').textContent = currentQuestion.answer;
+            document.getElementById('answer').classList.add('hidden');
+            document.getElementById('showAnswerBtn').classList.remove('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+        }
+
+        function showAnswer() {
+            document.getElementById('answer').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').classList.add('hidden');
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                if (confirm('Has visto todas las preguntas. ¿Quieres volver a barajarlas?')) {
+                    currentIndex = 0;
+                    shuffleQuestions();
+                    showQuestion();
+                }
+            }
+        }
+
+        // Iniciar el programa
+        shuffleQuestions();
+        showQuestion();
+
+        // Asignar los eventos a los botones
+        document.getElementById('showAnswerBtn').addEventListener('click', showAnswer);
+        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    </script>
+</body>
+</html>
